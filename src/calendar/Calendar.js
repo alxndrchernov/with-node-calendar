@@ -68,16 +68,10 @@ const ButtonsWrapper = styled('div')`
 
 const url = "http://localhost:7000";
 const totalDays = 42;
-// const defaultEvent = {
-// 	title: '',
-// 	description: '',
-// 	date: moment().format('X')
-// }
-
-const openEventsForm = (methodName, eventForUpdate) => {
-	setShowForm(true);
-	setEvent(eventForUpdate);
-	setMethod(mehodName);
+const defaultEvent = {
+	title: '',
+	description: '',
+	date: moment().format('X')
 }
 
 function Calendar() {
