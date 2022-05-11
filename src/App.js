@@ -2,8 +2,8 @@ import './App.css';
 
 import React from 'react';
 
-import LoginForm from "./components/LoginForm"
-import Dashboard from "./components/Dashboard"
+import LoginForm from "./LoginForm"
+import Dashboard from "./Dashboard"
 
 class App extends React.Component {
   state = {
