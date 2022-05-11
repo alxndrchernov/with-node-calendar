@@ -5,7 +5,7 @@ import {Title} from "../calendar/Title";
 import {Monitor} from "../calendar/Monitor";
 import {CalendarGrid} from "../calendar/CalendarGrid";
 import styled from "styled-components";
-
+import eventsData from "./../events.json"
 
 const ShadowWrapper = styled('div')`
   border-top: 1px solid #737374;
@@ -66,7 +66,7 @@ const ButtonsWrapper = styled('div')`
   justify-content: flex-end;
 `;
 
-const url = "http://localhost:3000";
+const url = "http://localhost:7000";
 const totalDays = 42;
 const defaultEvent = {
 	title: '',
