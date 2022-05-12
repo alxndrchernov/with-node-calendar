@@ -1,59 +1,22 @@
 import React from "react";
-import styled from "styled-components";
-
-const DivWrapper = styled('div')`
-  display: flex;
-  justify-content: space-between;
-  background-color: #1E1F21;
-	color: #DCDDDD;
-	padding: 16px;
-`;
-
-const TextWrapper = styled('span')`
-  font-size: 32px;
-`;
-
-const TitleWrapper = styled(TextWrapper)`
-  font-weight: bold;
-  margin-right: 8px;
-`;
-
-const ButtonsWrapper = styled('div')`
-  display: flex;
-  align-items: center;
-`;
-
-const ButtonWrapper = styled('button')`
-  border: unset;
-	background-color: #565759;
-	height: 20px;
-	margin-right: 2px;
-	border-radius: 4px;
-	color: #E6E6E6;
-	outline: unset;
-	cursor:pointer;
-`;
-
-const TodayButton = styled(ButtonWrapper)`
-  padding-right: 16px;
-	padding-left: 16px;
-	font-weight: bold;
-`;
+import '../App.css'
+import MyButton from "./MyButton";
 
 
-const Monitor = ({ today, prevHandler, todayHandler, nextHandler }) => (
-    <DivWrapper>
-        <div>
-            <TitleWrapper>{today.format('MMMM')}</TitleWrapper>
-            <TextWrapper>{today.format('YYYY')}</TextWrapper>
-        </div>
-        <ButtonsWrapper>
-            <ButtonWrapper onClick={prevHandler}> &lt; </ButtonWrapper>
-            <TodayButton onClick={todayHandler}>Today</TodayButton>
-            <ButtonWrapper onClick={nextHandler}> &gt; </ButtonWrapper>
-        </ButtonsWrapper>
-    </DivWrapper>
+const Monitor = ({ today, prevMonth, thisMonth, nextMonth }) => {
+  return (
+    <div id='MonitorWrapper'>
+      <div id='TextWrapper'>
+        <span style={{ marginRight: '8px', fontWeight: 'bold' }}>{today.format('MMMM')}</span>
+        <span>{today.format('YYYY')}</span>
+      </div>
+      <div id='ButtonsWrapper'>
+        <button id='ChangeMonthButton' onClick={prevMonth}> &lt; </button>
+        <MyButton onClick={thisMonth}>Today</MyButton>
+        <button id='ChangeMonthButton' onClick={nextMonth}> &gt; </button>
+      </div>
+    </div>
+  );
+};
 
-);
-
-export { Monitor };
+export default Monitor;

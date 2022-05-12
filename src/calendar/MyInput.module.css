@@ -1,0 +1,11 @@
+.myInput {
+    padding: 4px 14px;
+    font-size: .85rem;
+    width: 100%;
+    border: unset;
+    background-color: #1E1F21;
+    font-weight: bold;
+    color: #DDDDDD;
+    outline: unset;
+    border-bottom: 1px solid teal;
+}

@@ -1,139 +1,90 @@
 import React from "react";
+import { nanoid } from 'nanoid'
 import moment from "moment";
 import styled from "styled-components";
+import '../App.css'
 
-const GridWrapper = styled.div`
-	display: grid;
-	grid-template-columns: repeat(7, 1fr);
-  grid-gap: 1px;
-  background-color: ${props => props.isHeader ? '#1E1F21' : '#4D4C4D'};
-	${props => props.isHeader && `border-bottom: 1px solid #4D4C4D`}
+const CellWrapper = styled('div')`
+min-width: 140px;
+min-height: 80px;
+background-color: ${props => props.isWeekends ? '#272829' : '#1E1F25'};
+color: ${props => props.selectedMonth ? 'deeppink' : 'DarkSlateGray'};
 `;
 
-const CellWrapper = styled.div`
-	min-height: ${props => props.isHeader ? 24 : 80}px;
-	min-width: 140px;
-	background-color: ${props => props.isWeekday ? '#27282A' : '#1E1F21'};
-	color: ${props => props.isSelectedMonth ? '#DDDDDD' : '#555759'};
-`;
-
-const RowInCell = styled.div`
-	display: flex;
-	flex-direction: column;
-	justify-content: ${props => props.justifyContent ? props.justifyContent : 'flex-start'};
-	${props => props.pr && `padding-right: ${props.pr * 8}px`}
-`;
-
-const DayWrapper = styled.div`
-  height: 31px;
-  width: 31px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 2px;
-  cursor: pointer;
-;`
-
-const CurrentDay = styled('div')`
-  height: 100%;
-  width: 100%;
-  background: #f00;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const ShowDayWrapper = styled('div')`
-	display: flex;
-	justify-content: flex-end;
-`;
-
-const EventListWrapper = styled('ul')`
-	margin: unset;
-	list-style-position: inside;
-	padding-left: 4px;
-`;
-
-const EventItemWrapper = styled('button')`
-	position: relative;
-	left: -14px;
-	text-overflow: ellipsis;
-	overflow: hidden;
-	white-space: nowrap;
-	width: 114px;
-	border: unset;
-	background: unset;
-	color: #DDDDDD;
-	cursor: pointer;
-	margin: 0;
-	padding: 0;
-	text-align: left;
+const RowInCell = styled('div')`
+display: flex;
+justify-content: ${props => props.justifyContent ? props.justifyContent : 'flex-start'};
+flex-direction: column;
 `;
 
 
-const CalendarGrid = ({ startDay, today, totalDays, events, openFormHandler }) => {
+
+const CalendarGrid = ({ startDay, today, totalDays, events, openEventsForm, setShowDel }) => {
+
     const day = startDay.clone().subtract(1, 'day');
-    const daysMap = [...Array(totalDays)].map(() => day.add(1, 'day').clone())
-
-    const isCurrentDay = (day) => moment().isSame(day, 'day');
-    const isSelectedMonth = (day) => today.isSame(day, 'month');
-
+    const currentDay = (day) => moment().isSame(day, 'day');
+    const selectedMonth = (day) => today.isSame(day, 'month');
+    const daysArray = [...Array(totalDays)].map(() => day.add(1, 'day').clone());
 
     return (
         <>
-            <GridWrapper isHeader>
+            <div id="weekGridWrapper">{[...Array(7)].map((weekDay, index) => (
+                <div key={index} id='weekWrapper'>
+                    <RowInCell style={{ paddingRight: '8px' }} justifyContent={'flex-end'}>
+                        {moment().day(index + 1).format('ddd')}
+                    </RowInCell>
+                </div>))}
+            </div>
+            <div id="GridWrapper">
                 {
-                    [...Array(7)].map((_, i) => (
-                        <CellWrapper isHeader isSelectedMonth key={i}>
-                            <RowInCell justifyContent={'flex-end'} pr={1}>
-                                {moment().day(i + 1).format('ddd')}
-                            </RowInCell>
-                        </CellWrapper>
-                    ))
-                }
-            </GridWrapper>
-            <GridWrapper>
-                {
-                    daysMap.map((dayItem) => (
+                    daysArray.map((dayItem) => (
                         <CellWrapper
-                            isWeekday={dayItem.day() === 6 || dayItem.day() === 0}
                             key={dayItem.unix()}
-                            isSelectedMonth={isSelectedMonth(dayItem)}
+                            isWeekends={dayItem.day() === 6 || dayItem.day() === 0}
+                            selectedMonth={selectedMonth(dayItem)}
                         >
-                            <RowInCell justifyContent={'flex-end'}>
-                                <ShowDayWrapper>
-                                    <DayWrapper onDoubleClick={() => openFormHandler('Create')}>
-                                        {
-                                            isCurrentDay(dayItem) ? (
-                                                <CurrentDay>{dayItem.format('D')}</CurrentDay>
-                                            ) : (
-                                                dayItem.format('D')
-                                            )
-                                        }
-                                    </DayWrapper>
-                                </ShowDayWrapper>
-                                <EventListWrapper>
+
+                            <RowInCell
+                                justifyContent={'flex-end'}
+                            >
+
+                                <div id='ShowDayWrapper'>
+
+                                    <div id='DayWrapper'
+                                        onClick={() => openEventsForm('Create', {
+                                            id: nanoid(),
+                                            title: '',
+                                            description: '',
+                                            date: dayItem.format('X')
+                                        })}>
+
+                                        {currentDay(dayItem)
+                                            ? <div id='CurrentDay'>{dayItem.format('D')}</div>
+                                            : <div id='Day'>{dayItem.format('D')}</div>}
+
+                                    </div>
+
+                                </div>
+                                <ul id='Events'>
                                     {
                                         events
                                             .filter(event => event.date >= dayItem.format('X') && event.date <= dayItem.clone().endOf('day').format('X'))
-                                            .map(event => (
+                                            .map(event =>
                                                 <li key={event.id}>
-                                                    <EventItemWrapper onDoubleClick={() => openFormHandler('Update', event)} >
+                                                    <button id='Event' onClick={() => { setShowDel(true); openEventsForm('Update', event) }}>
                                                         {event.title}
-                                                    </EventItemWrapper>
+                                                    </button>
                                                 </li>
-                                            ))
+                                            )
                                     }
-                                </EventListWrapper>
+                                </ul>
                             </RowInCell>
                         </CellWrapper>
                     ))
                 }
-            </GridWrapper>
+            </div>
         </>
     );
 };
 
-
-export { CalendarGrid };
+export default CalendarGrid;

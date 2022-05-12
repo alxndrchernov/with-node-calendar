@@ -1,178 +1,129 @@
 import React, { useEffect, useState } from "react";
 import moment from "moment";
 
-import {Title} from "../calendar/Title";
-import {Monitor} from "../calendar/Monitor";
-import {CalendarGrid} from "../calendar/CalendarGrid";
-import styled from "styled-components";
-import eventsData from "./../events.json"
+import Title from "./Title";
+import Monitor from "./Monitor";
+import CalendarGrid from "./CalendarGrid";
+import MyInput from "./MyInput";
 
-const ShadowWrapper = styled('div')`
-  border-top: 1px solid #737374;
-  border-left: 1px solid #464648;
-  border-right: 1px solid #464648;
-  border-bottom: 2px solid #464648;
-  border-radius: 8px;
-  overflow:hidden;
-  box-shadow: 0 0 0 1px #1A1A1A, 0 8px 20px 6px #888;
-`;
-
-const FormPositionWrapper = styled('div')`
-  position: absolute;
-  z-index: 100;
-  background-color: rgba(0, 0, 0, 0.35);
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const FormWrapper = styled(ShadowWrapper)`
-  width: 200px;
-  //height: 300px;
-  background-color: #1E1F21;
-  color: #DDDDDD;
-  box-shadow:unset;
-`;
-
-const EventTitle = styled('input')`
-  padding: 4px 14px;
-  font-size: .85rem;
-  width: 100%;
-  border: unset;
-  background-color: #1E1F21;
-  color: #DDDDDD;
-  outline: unset;
-  border-bottom: 1px solid #464648;
-`;
-
-const EventBody = styled('input')`
-  padding: 4px 14px;
-  font-size: .85rem;
-  width: 100%;
-  border: unset;
-  background-color: #1E1F21;
-  color: #DDDDDD;
-  outline: unset;
-  border-bottom: 1px solid #464648;
-`;
-
-const ButtonsWrapper = styled('div')`
-  padding: 8px 14px;
-  display: flex;
-  justify-content: flex-end;
-`;
-
-const url = "http://localhost:7000";
-const totalDays = 42;
-const defaultEvent = {
-	title: '',
-	description: '',
-	date: moment().format('X')
-}
+import '../App.css'
 
 function Calendar() {
 
-moment.updateLocale('en', {week: {dow: 1}});
-	const [today, setToday] = useState(moment())
+	moment.updateLocale("en", { week: { dow: 1 } });
+	const [today, setToday] = useState(moment());
 	const startDay = today.clone().startOf('month').startOf('week');
-  
+	const totalDays = 42;
 
-	const prevHandler = () => setToday(prev => prev.clone().subtract(1, 'month'));
-	const todayHandler = () => setToday(moment())
-	const nextHandler = () => setToday(prev => prev.clone().add(1, 'month'));
 
-	const [method, setMethod] = useState(null)
-	const [isShowForm, setShowForm] = useState(false);
+	const prevMonth = () => {
+		setToday(prev => prev.clone().subtract(1, 'month'));
+	}
+	const thisMonth = () => {
+		setToday(moment());
+	}
+	const nextMonth = () => {
+		setToday(today.clone().add(1, 'month'));
+	}
+	const [method, setMethod] = useState(null);
 	const [event, setEvent] = useState(null);
 
+	const [ShowForm, setShowForm] = useState(false);
+	const [showDel, setShowDel] = useState(false);
 	const [events, setEvents] = useState([]);
-	const startDayQuery = startDay.clone().format('X');
-	const endDayQuery = startDay.clone().add(totalDays, 'days').format('X');
-	useEffect(() => {
-		fetch(`${url}/events?date_gte=${startDayQuery}&date_lte=${endDayQuery}`)
-			.then(res => res.json())
-			.then(res => setEvents(res));
-	}, [today]);
 
-	const openFormHandler = (methodName, eventForUpdate) => {
-		console.log('onDoubleClick', methodName);
+
+	useEffect(() => {
+		if (localStorage.getItem('events')) {
+			const notes = JSON.parse(localStorage.getItem('events'))
+			setEvents(notes);
+		}
+	}, [])
+
+
+	const openEventsForm = (methodName, eventForUpdate) => {
 		setShowForm(true);
-		setEvent(eventForUpdate || defaultEvent);
+		setEvent(eventForUpdate);
 		setMethod(methodName);
 	}
 
-	const cancelButtonHandler = () => {
+	const cancelForm = () => {
 		setShowForm(false);
 		setEvent(null);
+		setShowDel(false);
 	}
 
-	const changeEventHandler = (text, field) => {
+	const changeEvent = (text, field) => {
 		setEvent(prevState => ({
 			...prevState,
 			[field]: text
-		}))
+		})
+		)
 	}
 
-	const eventFetchHandler = () => {
-		const fetchUrl = method === 'Update' ? `${url}/events/${event.id}` : `${url}/events`;
-		const httpMethod = method === 'Update' ? 'PATCH' : 'POST';
+	const creUpNote = () => {
+		if (event.title.length > 0) {
 
-		fetch(fetchUrl, {
-			method: httpMethod,
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify(event)
-		})
-			.then(res => res.json())
-			.then(res => {
-				console.log(res);
-				if (method === 'Update') {
-					setEvents(prevState => prevState.map(eventEl => eventEl.id === res.id ? res : eventEl))
-				} else {
-					setEvents(prevState => [...prevState, res]);
-				}
-				cancelButtonHandler()
-			})
+			if (method === 'Update') {
+				setEvents(events.map(eventEl => eventEl.id === event.id ? event : eventEl))
+				localStorage.setItem('events', JSON.stringify(events.map(eventEl => eventEl.id === event.id ? event : eventEl)))
+			}
+			else {
+				setEvents([...events, event])
+				localStorage.setItem('events', JSON.stringify([...events, event]))
+			}
+		}
+		cancelForm();
+	}
+
+	const deleteNote = () => {
+		setEvents(events.filter(note => note.id !== event.id));
+		localStorage.setItem('events', JSON.stringify(events.filter(note => note.id !== event.id)))
+		cancelForm();
 	}
 
 	return (
 		<>
 			{
-				isShowForm ? (
-					<FormPositionWrapper onClick={cancelButtonHandler}>
-						<FormWrapper onClick={e => e.stopPropagation()}>
-							<EventTitle
+				ShowForm ? (
+					<div id='EventsForm' onClick={cancelForm}>
+						<div id='EventForm' onClick={e => e.stopPropagation()}>
+							<MyInput
+								onChange={e => changeEvent(e.target.value, 'title')}
 								value={event.title}
-								onChange={e => changeEventHandler(e.target.value, 'title')}
+								placeholder='Title'
 							/>
-							<EventBody
+							<MyInput
+								onChange={e => changeEvent(e.target.value, 'description')}
 								value={event.description}
-								onChange={e => changeEventHandler(e.target.value, 'description')}
+								placeholder='Description'
 							/>
-							<ButtonsWrapper>
-								<button onClick={cancelButtonHandler} >Cancel</button>
-								<button onClick={eventFetchHandler}>{method}</button>
-							</ButtonsWrapper>
-						</FormWrapper>
-					</FormPositionWrapper>
+							<div id='ButtonsForm'>
+								<button className='buttonForm' onClick={cancelForm}>Cancel</button>
+								<button className='buttonForm' onClick={creUpNote}>{method}</button>
+								{showDel && <button id='buttonDel' onClick={deleteNote}>Х</button>}
+							</div>
+						</div>
+					</div>
 				) : null
 			}
-			<ShadowWrapper>
+			<div id="GeneralWindow">
 				<Title />
 				<Monitor
 					today={today}
-					prevHandler={prevHandler}
-					todayHandler={todayHandler}
-					nextHandler={nextHandler}
+					prevMonth={prevMonth}
+					thisMonth={thisMonth}
+					nextMonth={nextMonth}
 				/>
-				<CalendarGrid startDay={startDay} today={today} totalDays={totalDays} events={events} openFormHandler={openFormHandler} />
-			</ShadowWrapper>
-
+				<CalendarGrid
+					startDay={startDay}
+					today={today}
+					totalDays={totalDays}
+					events={events}
+					openEventsForm={openEventsForm}
+					setShowDel={setShowDel}
+				/>
+			</div>
 		</>
 	)
 }
