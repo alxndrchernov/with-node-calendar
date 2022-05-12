@@ -76,3 +76,229 @@ body {
   background:rgb(211, 211, 243);
 }
 
+#GeneralWindow {
+  border-radius: 8px;
+  overflow: hidden;
+  border-top: 2px solid teal;
+  border-left: 2px solid teal;
+  border-right: 2px solid teal;
+  border-bottom: 2px solid teal;
+  box-shadow: 0 0 0 1px #1A1A1A, 0 8px 20px 6px #888;
+  width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
+}
+#GridWrapper {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-gap: 1px;
+  background-color: teal;
+}
+#weekGridWrapper {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  background-color: #404040;
+  text-align: center;
+}
+#weekWrapper {
+  min-width: 140px;
+  min-height: 20px;
+  background-color: #1E1F25;
+  color: deeppink;
+  border-bottom: 2px solid teal;
+}
+#DayWrapper {
+  width: 33px;
+  height: 33px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 2px;
+  cursor: pointer;
+}
+#CurrentDay {
+  height: 80%;
+  width: 80%;
+  background: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: navy;
+}
+
+#Day:hover {
+  height: 80%;
+  width: 80%;
+  background: teal;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: navy;
+  font-size: 17px;
+}
+#Day:active {
+  color: white;
+  border: 3px solid white;
+}
+#CurrentDay:hover {
+  height: 80%;
+  width: 80%;
+  background: mediumseagreen;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: navy;
+}
+#CurrentDay:active {
+  color: white;
+  border: 3px solid white;
+}
+
+#MonitorWrapper {
+  display: flex;
+  justify-content: space-between;
+  background-color: #1E1F25;
+  color: deeppink;
+  padding: 16px;
+}
+#TextWrapper {
+  font-size: 32px;
+}
+#ButtonsWrapper {
+  display: flex;
+  align-items: center;
+}
+#HeaderWrapper {
+  background-color: #2A2820;
+  height: 35px;
+  border-bottom: 1px solid teal;
+}
+
+#MonitorWrapper {
+  display: flex;
+  justify-content: space-between;
+  background-color: #1E1F25;
+  color: deeppink;
+  padding: 16px;
+}
+#TextWrapper {
+  font-size: 32px;
+}
+#ButtonsWrapper {
+  display: flex;
+  align-items: center;
+}
+#HeaderWrapper {
+  background-color: #2A2820;
+  height: 35px;
+  border-bottom: 1px solid teal;
+}
+
+#ShowDayWrapper {
+  display: flex;
+  justify-content: flex-end;
+}
+#Events {
+  margin: unset;
+  list-style-position: inside;
+  padding-left: 4px;
+}
+#Event {
+  position: relative;
+  left: -14px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  width: 114px;
+  border: unset;
+  background: unset;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  margin: 0;
+  padding: 0;
+  text-align: left;
+}
+#Event:hover {
+  color: teal;
+  font-size: 15px;
+}
+#Event:active {
+  color: deeppink;
+}
+#EventsForm {
+  position: absolute;
+  z-index: 100;
+  background-color: rgba(0,0,0,0.35);
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#EventForm {
+  width: 200px;
+  background-color: #1E1F21;
+  color: #DDDDDD;
+  box-shadow: unset;
+  border-radius: 8px;
+  overflow: hidden;
+  border-top: 1px solid teal;
+  border-left: 1px solid teal;
+  border-right: 1px solid teal;
+  border-bottom: 2px solid teal;
+}
+
+#ChangeMonthButton {
+  background-color: #565759;
+  height: 20px;
+  margin-right: 2px;
+  border-radius: 4px;
+  color: deeppink;
+  cursor: pointer;
+  border: 1px solid teal;
+}
+#ChangeMonthButton:hover {
+  border: 2px solid teal;
+  color: teal;
+}
+#ChangeMonthButton:active {
+  color: white;
+  border: 3px solid deeppink;
+}
+
+#ButtonsForm {
+  padding: 8px 14px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.buttonForm {
+  font-weight: bold;
+  justify-content: center;
+  border-radius: 8px;
+  color: teal;
+  border: 1px solid teal;
+}
+.buttonForm:hover {
+  color: deeppink;
+  cursor: pointer;
+}
+
+#buttonDel {
+  color: red;
+  border-radius: 8px;
+  font-weight: bold;
+  border: 1px solid teal;
+}
+
+#buttonDel:hover {
+  background-color: black;
+  border: 1px solid red;
+  cursor: pointer;
+}
