@@ -5,10 +5,10 @@ var path = require('path');
 var app = express();
 app.use(cors());
 
-app.get('/events', function(request, response){
+app.get('/api/events', function(request, response){
 	var fileName = path.resolve(__dirname, './data/events.json');
 	response.sendFile(fileName, {})
 });
 
-app.listen(7000)
+app.listen(8080)
 

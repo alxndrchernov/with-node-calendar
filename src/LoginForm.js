@@ -5,6 +5,10 @@ class LoginForm extends React.Component {
     const { handleLoginClick } = this.props;
     handleLoginClick(true);
   }
+  componentDidMount() {
+    // тестовый запрос на локальный сервер
+    fetch('/api/events')
+  }
 
   render() {
     return (
