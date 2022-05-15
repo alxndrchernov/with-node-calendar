@@ -7,7 +7,7 @@ import CalendarGrid from "./CalendarGrid";
 import MyInput from "./MyInput";
 
 import '../App.css'
-import {newEvent} from "../api/api";
+import {newEvent, updateEvent} from "../api/api";
 
 function Calendar({eventsData}) {
 
@@ -65,16 +65,17 @@ function Calendar({eventsData}) {
 
 	const creUpNote = async () => {
 		if (event.title.length > 0) {
-
 			if (method === 'Update') {
+				await updateEvent(event).then(async res=>{
+					console.log(res)
+				})
 
 				setEvents(events.map(eventEl => eventEl.id === event.id ? event : eventEl))
 				// localStorage.setItem('events', JSON.stringify(events.map(eventEl => eventEl.id === event.id ? event : eventEl)))
 			}
 			else {
 				await newEvent(event).then(async res=>{
-					const response = await res.json()
-					console.log(response)
+					console.log(res)
 				})
 				setEvents([...events, event])
 				// localStorage.setItem('events', JSON.stringify([...events, event]))

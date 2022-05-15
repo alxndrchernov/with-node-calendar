@@ -1,41 +1,40 @@
 {
-    "events": [
-      {
-        "id": 1,
-        "title": "Go to walk",
-        "description": "Go to walk",
-        "date": 1651167462
-      },
-      {
-        "id": 2,
-        "title": "Make 7-th lesson",
-        "description": "Make 7-th lesson",
-        "date": 1650044261
-      },
-      {
-        "id": 3,
-        "title": "Go to walk",
-        "description": "Go to walk",
-        "date": 1651322165
-      },
-      {
-        "id": 4,
-        "title": "Make 7-th lesson",
-        "description": "Make 7-th lesson",
-        "date": 1651408565
-      },
-      {
-        "id": 5,
-        "title": "9 may",
-        "description": "9 may",
-        "date": 1652099765
-      },
-      {
-        "id": 6,
-        "title": "Make 7-th lesson",
-        "description": "Make 7-th lesson",
-        "date": 1652272565
-      }
-    ]
-  }
-  
+  "events": [
+    {
+      "id": 1,
+      "title": "Go to walk",
+      "description": "Go to walk",
+      "date": 1651167462
+    },
+    {
+      "id": 2,
+      "title": "Make 7-th lesson",
+      "description": "Make 7-th lesson",
+      "date": 1650044261
+    },
+    {
+      "id": 3,
+      "title": "Go to walk",
+      "description": "Go to walk",
+      "date": 1651322165
+    },
+    {
+      "id": 4,
+      "title": "Make 7-th lesson",
+      "description": "Make 7-th lesson",
+      "date": 1651408565
+    },
+    {
+      "id": 5,
+      "title": "9 may",
+      "description": "9 may",
+      "date": 1652099765
+    },
+    {
+      "id": 6,
+      "title": "Make 7-th lesson",
+      "description": "Make 7-th lesson",
+      "date": 1652272565
+    }
+  ]
+}
