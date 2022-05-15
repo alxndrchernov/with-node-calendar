@@ -7,8 +7,9 @@ import CalendarGrid from "./CalendarGrid";
 import MyInput from "./MyInput";
 
 import '../App.css'
+import {newEvent} from "../api/api";
 
-function Calendar() {
+function Calendar({eventsData}) {
 
 	moment.updateLocale("en", { week: { dow: 1 } });
 	const [today, setToday] = useState(moment());
@@ -34,11 +35,12 @@ function Calendar() {
 
 
 	useEffect(() => {
+		setEvents(eventsData)
 		if (localStorage.getItem('events')) {
 			const notes = JSON.parse(localStorage.getItem('events'))
 			setEvents(notes);
 		}
-	}, [])
+	}, [eventsData])
 
 
 	const openEventsForm = (methodName, eventForUpdate) => {
@@ -61,16 +63,21 @@ function Calendar() {
 		)
 	}
 
-	const creUpNote = () => {
+	const creUpNote = async () => {
 		if (event.title.length > 0) {
 
 			if (method === 'Update') {
+
 				setEvents(events.map(eventEl => eventEl.id === event.id ? event : eventEl))
-				localStorage.setItem('events', JSON.stringify(events.map(eventEl => eventEl.id === event.id ? event : eventEl)))
+				// localStorage.setItem('events', JSON.stringify(events.map(eventEl => eventEl.id === event.id ? event : eventEl)))
 			}
 			else {
+				await newEvent(event).then(async res=>{
+					const response = await res.json()
+					console.log(response)
+				})
 				setEvents([...events, event])
-				localStorage.setItem('events', JSON.stringify([...events, event]))
+				// localStorage.setItem('events', JSON.stringify([...events, event]))
 			}
 		}
 		cancelForm();
@@ -78,7 +85,7 @@ function Calendar() {
 
 	const deleteNote = () => {
 		setEvents(events.filter(note => note.id !== event.id));
-		localStorage.setItem('events', JSON.stringify(events.filter(note => note.id !== event.id)))
+		// localStorage.setItem('events', JSON.stringify(events.filter(note => note.id !== event.id)))
 		cancelForm();
 	}
 
